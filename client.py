@@ -1,6 +1,8 @@
 import socket
 import logging
 
+logging.basicConfig(filename="client.log", level=logging.INFO)
+
 
 def set_host():
     while True:
@@ -114,6 +116,7 @@ try:
         print(ex)
 
     sock.close()
+
 
 except Exception as ex:
     log = "Failed to connect to server\nException is: %s" % ex

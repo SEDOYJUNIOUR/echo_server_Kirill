@@ -1,9 +1,10 @@
 import socket
 import logging
 
+logging.basicConfig(filename="server.log", level=logging.INFO)
+
 
 def set_host():
-    # Initializing hostname
     while True:
         print('Type HOST below or write "def" for default HOST')
         try:
@@ -19,7 +20,6 @@ def set_host():
 
 
 def set_port():
-    # Initializing port
     while True:
         print('Type PORT below or write "def" for default PORT')
         try:
@@ -38,38 +38,22 @@ def set_port():
 
 
 def message_handler(conn, addr):
-    # Process messages
-    # Initializing whitelist
-    data = ''
     while True:
         try:
             msg = conn.recv(1024)
             if not msg:
                 break
 
-            splited_data = msg.decode().split(':')
-            client_login = splited_data[0]
-            client_passwd = splited_data[1]
-            data = splited_data[2]
 
-            logpass = client_login + ':' + client_passwd
-            whitelist_bool = False
-            for row in whitelist.readlines():
-                if row.rstrip() == logpass:
-                    whitelist_bool = True
 
-            if whitelist_bool is False:
-                data = "You do not have access to use this server"
-                send_message(data)
-                conn.close()
-                log = 'Last user do not enter a right login or password'
-                logging.info(log)
-                print(log)
-                break
-            else:
-                log = 'Received "%s" from %s:%s' % (data, addr[0], addr[1])
-                logging.info(log)
-                print(log)
+            data = "You do not have access to use this server"
+            send_message(data)
+            conn.close()
+            log = 'Last user do not enter a right login or password'
+            logging.info(log)
+            print(log)
+            break
+
         except Exception as ex:
             log = 'An error in receiving messages was occurred by exception: %s' % ex
             logging.error(log)
